@@ -26,7 +26,7 @@ async function uploadMessage(name, email, message) {
     const data = {name: name, email: email, message: message};
     await setDoc(doc(db, 'Contact', email), data)
 }
-
+// yo
 async function getKey(key) {
     const docRef = doc(db, 'Keys', key);
     const docSnap = await getDoc(docRef);
