@@ -26,12 +26,13 @@ async function uploadMessage(name, email, message) {
     const data = {name: name, email: email, message: message};
     await setDoc(doc(db, 'Contact', email), data)
 }
-// yo
-async function getKey(key) {
-    const docRef = doc(db, 'Keys', key);
-    const docSnap = await getDoc(docRef);
 
-    return docSnap.data().key;
+
+async function getKey(keyName) {
+    const docRef = doc(db, 'Keys', keyName);
+    const docSnap = await getDoc(docRef);
+    const key = await docSnap.data().key;
+    return key;
 }
 
 

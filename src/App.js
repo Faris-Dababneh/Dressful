@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Dress from './pages/Dress';
 import Dresser from './pages/Dresser';
 import Contact from './pages/Contact';
+import NoItem from './pages/NoItem';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path='/' Component={Home}/>
         <Route path='/dress' Component={Dress}/>
         <Route path='/contact' Component={Contact}/>
+        <Route path='/,' Component={NoItem}/>
       </Routes>
     </Router>
   );

@@ -86,11 +86,11 @@ function SelectionMode({ onInputChange })
                         handleOccasion(newValue);
                       }}
                     focused
-                    sx={{ width: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'} }}
+                    sx={{ width: '80%', maxWidth: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'} }}
                     renderInput={(params) => <TextField {...params} label="Occasion" color='secondary' />}
                     className='mb-4'
                 />
-
+    
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
@@ -102,12 +102,12 @@ function SelectionMode({ onInputChange })
                         // Update the state when a new value is selected
                         handleStyle(newValue);
                       }}
-                    sx={{ width: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'}, '& .MuiInput-underline:after': {color: '#00ADB5'} }}
+                    sx={{ width: '80%', maxWidth: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'}, '& .MuiInput-underline:after': {color: '#00ADB5'} }}
                     renderInput={(params) => <TextField {...params} label="Mood" color='secondary' />}
                     className='mb-4'
                 />
-                <div className='flex flex-row content-center align-center justify-center'>
-                    <h2 className='text-xl text-tertiary mt-2'>TEMPERATURE (°F)</h2>
+                <div className='flex flex-row content-center align-center justify-center w-full'>
+                    <h2 className='text-xl text-tertiary mt-2 mr-2'>TEMPERATURE (°F)</h2>
                     <Switch {...switchLabel} checked={temperatureToggle} onChange={handleToggle}
                                 name='temperatureToggle' color='secondary' className='mt-1'/>
                 </div>
@@ -122,8 +122,8 @@ function SelectionMode({ onInputChange })
                             step={10}
                             marks={temperatureMarks}
                             valueLabelDisplay='auto'
-                            sx={{width: 300}}
-                            className='w-1/2 mr-4 text-secondary'
+                            sx={{width: '70%', maxWidth: 300}}
+                            className='mr-4 text-secondary'
                         />
                         <Input
                             value={temperatureValue}

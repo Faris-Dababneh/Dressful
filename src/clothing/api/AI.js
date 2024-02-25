@@ -3,15 +3,12 @@ import OpenAI from "openai";
 import axios from 'axios';
 import URLToPNG from "./URLToPNG";
 import { getKey } from "../Database";
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
+
 
 
 async function main(inputText) {
     // MAKE SURE THIS IS HIDDEN ON PRODUCTION
-    const openai = new OpenAI({ apiKey: getKey('openAIAPI'), dangerouslyAllowBrowser: true});
+    const openai = new OpenAI({ apiKey: await getKey('openAI'), dangerouslyAllowBrowser: true});
 
     // MAKE SURE THIS IS HIDDEN ON PRODUCTION
     const API_KEY = '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';
@@ -27,10 +24,10 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
 {
   let inputText;
   if (isCustom) {
-    inputText = `Generate an outfit for a ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for the following situation: '${occasion}'. When listing the items in the outfit, list the item in the following exact format: "part: item, part: item" where part represents where each clothing item is worn (either head, upper, lower, feet) and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as "part: none." Additionally, some outfits may have multiple items worn on the same body part, so ensure you include an additional "part: item" item for this case.`;
+    inputText = `Generate an outfit for a ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for the following situation: '${occasion}'. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
     console.log(inputText)
   } else {
-    inputText = `Generate an outfit for a ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for a ${occasion}, is feeling ${style}, and it is ${temperature} degrees outside. When listing the items in the outfit, list the item in the following exact format: "part: item, part: item" where part represents where each clothing item is worn (either head, upper, lower, feet) and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as "part: none." Additionally, some outfits may have multiple items worn on the same body part, so ensure you include an additional "part: item" for this case.`;
+    inputText = `Generate an outfit for a ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for the following situation: '${occasion}', is feeling ${style}, and it is ${temperature} degrees outside. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
     console.log(inputText)
   }
 
@@ -53,7 +50,7 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
     // Gets the actual clothing item from the item string
     const clothing = item.substring(item.indexOf(':') + 1);
 
-    if (clothing.toLowerCase().includes('none') || clothing.includes('empty')) {
+    if (clothing.toLowerCase().includes('none') || clothing.includes('empty') || clothing.includes('part')) {
       return;
     }
     // https://rapidapi.com/bharatcodewolf/api/amazon-data-scraper128/pricing
@@ -62,7 +59,7 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
       method: 'GET',
       url: `https://amazon-data-scraper128.p.rapidapi.com/search/${gender}_${clothing}`,
       params: {
-        api_key: getKey('amazonScraperAPI')
+        api_key: await getKey('amazonScraper')
       },
       headers: {
         'X-RapidAPI-Key': '27e0c073b5msh2dde25fa9fb08dfp1380dcjsn56bdbd7473f6',
@@ -79,8 +76,14 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
 
     //const asin = response.data.results[0].asin;
     //const url = `https://www.amazon.com/dp/${asin}`;
+    let url = 'https://www.amazon.com/ref=nav_logo';
+
+    try {
+      url = await response.data.results[0].url;
+    } catch (error) {
+      console.log('Waiting for API');
+    }
     
-    const url = await response.data.results[0].url;
     let affiliateURL = url.slice(0, url.indexOf('/ref')); // removes the end part of the amazon link
     affiliateURL += '?th=1&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag
 

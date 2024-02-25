@@ -91,6 +91,23 @@ function Preview({ outfit })
 
     return (
         <LoadingOverlay active={isWaiting} spinner className='h-full w-full' text='Assembling your outfit. This will take a few seconds.'>
+            <div className='flex flex-col md:flex-row w-full h-full justify-center items-center'>
+                <div className='md:flex md:flex-col'>
+                    <Carousel images={outfitImages.headWear} links={outfitLinks.headWear}/>
+                    <Carousel images={outfitImages.upperWear} links={outfitLinks.upperWear}/>
+                    <Carousel images={outfitImages.lowerWear} links={outfitLinks.lowerWear}/>
+                    <Carousel images={outfitImages.footWear} links={outfitLinks.footWear}/>
+                </div>
+            </div>
+        </LoadingOverlay>
+    );
+}
+
+export default Preview;
+
+/*
+return (
+        <LoadingOverlay active={isWaiting} spinner className='h-full w-full' text='Assembling your outfit. This will take a few seconds.'>
             <div className='flex flex-row w-full h-full content-center items-center justify-center'>
                     <div className=''>
                         <Carousel images={outfitImages.headWear} links={outfitLinks.headWear}/>
@@ -101,15 +118,5 @@ function Preview({ outfit })
             </div>
         </LoadingOverlay>
     );
-}
 
-export default Preview;
-
-// <a href="https://amzn.to/3RZgsBM" target='_blank'></a>
-/*
-
-<Carousel images={outfitImages.headWear} links={outfitLinks.headWear}/>
-                <Carousel images={outfitImages.upperWear} links={outfitLinks.upperWear}/>
-                <Carousel images={outfitImages.lowerWear} links={outfitLinks.lowerWear}/>
-                <Carousel images={outfitImages.footWear} links={outfitLinks.footWear}/>
 */
