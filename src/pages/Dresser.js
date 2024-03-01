@@ -111,7 +111,7 @@ function Dresser()
     }
    
     const test = async () => {
-        const key = await getKey('openAI');
+        const key = await getKey('rapidAPI');
         console.log(key)
     }
 
@@ -161,7 +161,7 @@ function Dresser()
                     </div>
                 </ThemeProvider>
             </div>
-            <div className='md:w-3/4 h-full bg-accent overflow-auto'>
+            <div className='md:w-3/4 h-full bg-accent overflow-y-auto'>
                 <LoadingOverlay active={isLoading} spinner className='h-full' text='Processing your outfit...'>
                     <Preview outfit={categorizedItems}/>
                 </LoadingOverlay>

@@ -41,67 +41,69 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
     footWear: [],
   };
 
-  function timeout(delay) {
-    return new Promise( res => setTimeout(res, delay));
-  }
  
   const items = returnText.split(',').map((item) => item.trim()); // the variable would be in this format ['upper: shirt', 'lower: shorts', 'feet: shoes']
   items.forEach(async (item) => {
-    // Gets the actual clothing item from the item string
-    const clothing = item.substring(item.indexOf(':') + 1);
+      // Gets the actual clothing item from the item string
+      const clothing = item.substring(item.indexOf(':') + 1);
 
-    if (clothing.toLowerCase().includes('none') || clothing.includes('empty') || clothing.includes('part')) {
-      return;
-    }
-    // https://rapidapi.com/bharatcodewolf/api/amazon-data-scraper128/pricing
-    // MAKE SURE YOU HIDE API KEY ON PRODUCTION
-    const options = {
-      method: 'GET',
-      url: `https://amazon-data-scraper128.p.rapidapi.com/search/${gender}_${clothing}`,
-      params: {
-        api_key: await getKey('amazonScraper')
-      },
-      headers: {
-        'X-RapidAPI-Key': '27e0c073b5msh2dde25fa9fb08dfp1380dcjsn56bdbd7473f6',
-        'X-RapidAPI-Host': 'amazon-data-scraper128.p.rapidapi.com'
+      if (clothing.toLowerCase().includes('none') || clothing.includes('empty') || clothing.includes('part')) {
+        return;
       }
-    };
-    let response;
-    try {
-      response = await axios.request(options);
-      console.log(response.data); 
-    } catch (error) {
-      console.error(error);
-    }
+      
+      // MAKE SURE YOU HIDE API KEY ON PRODUCTION
+      const options = {
+        method: 'GET',
+        url: 'https://real-time-amazon-data.p.rapidapi.com/search',
+        params: {
+          query: `${gender}_${clothing}`,
+          page: '1',
+          country: 'US',
+          category_id: 'aps'
+        },
+        headers: {
+          'X-RapidAPI-Key': `${await getKey('rapidAPI')}`,
+          'X-RapidAPI-Host': 'real-time-amazon-data.p.rapidapi.com'
+        }
+      };
+      let response;
+      try {
+        response = await axios.request(options);
+        console.log(response.data.data); 
+        console.log(response.data.data.products); 
+      } catch (error) {
+        console.error(error);
+      }
 
-    //const asin = response.data.results[0].asin;
-    //const url = `https://www.amazon.com/dp/${asin}`;
-    let url = 'https://www.amazon.com/ref=nav_logo';
+      //const asin = response.data.results[0].asin;
+      //const url = `https://www.amazon.com/dp/${asin}`;
+      let url = 'https://www.amazon.com/ref=nav_logo';
+      let image = '';
 
-    try {
-      url = await response.data.results[0].url;
-    } catch (error) {
-      console.log('Waiting for API');
-    }
+      try {
+        url = await response.data.data.products[0].product_url; // ?&_encoding=UTF8&tag=dressful09-20&linkCode=ur2&linkId=bed16f27f02656ceeed8c569279af95d&camp=1789&creative=9325
+        console.log(response.data.data.products[0]);
+        image = await response.data.data.products[0].product_photo;
+      } catch (error) {
+        console.log('Waiting for API...');
+      }
+      
+      //let affiliateURL = url.slice(0, url.indexOf('/ref')); // removes the end part of the amazon link
+      let affiliateURL = url + '?&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag
+
+      let array = [affiliateURL, image];
+      if (item.toLowerCase().includes('head')) {
+        categorizedItems.headWear.push([...array]);
+      } else if (item.toLowerCase().includes('upper')) {
+        categorizedItems.upperWear.push([...array]);
+      } else if (item.toLowerCase().includes('lower')) {
+        categorizedItems.lowerWear.push([...array]);
+      } else if (item.toLowerCase().includes('feet')) {
+        categorizedItems.footWear.push([...array]);
+      }
     
-    let affiliateURL = url.slice(0, url.indexOf('/ref')); // removes the end part of the amazon link
-    affiliateURL += '?th=1&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag
-
-    let array = [affiliateURL, response.data.results[0].image];
-    if (item.toLowerCase().includes('head')) {
-      categorizedItems.headWear.push([...array]);
-    } else if (item.toLowerCase().includes('upper')) {
-      categorizedItems.upperWear.push([...array]);
-    } else if (item.toLowerCase().includes('lower')) {
-      categorizedItems.lowerWear.push([...array]);
-    } else if (item.toLowerCase().includes('feet')) {
-      categorizedItems.footWear.push([...array]);
-    }
-
-    await timeout(1000);
   });
   
-  // https://rapidapi.com/bharatcodewolf/api/amazon-data-scraper128 (api link)
   //?th=1&linkCode=ll1&tag=dressful09-20& (affiliate tag)
 
   console.log(categorizedItems);
@@ -110,3 +112,26 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
 
 export default OutfitReader;
 
+/*
+OLD API:
+
+const options = {
+        method: 'GET',
+        url: `https://amazon-data-scraper128.p.rapidapi.com/search/${gender}_${clothing}`,
+        params: {
+          api_key: await getKey('amazonScraper')
+        },
+        headers: {
+          'X-RapidAPI-Key': '27e0c073b5msh2dde25fa9fb08dfp1380dcjsn56bdbd7473f6',
+          'X-RapidAPI-Host': 'amazon-data-scraper128.p.rapidapi.com'
+        }
+      };
+      let response;
+      try {
+        response = await axios.request(options);
+        console.log(response.data); 
+      } catch (error) {
+        console.error(error);
+      }
+      affiliateURL += '?th=1&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag
+*/

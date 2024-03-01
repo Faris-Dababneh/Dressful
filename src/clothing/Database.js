@@ -32,40 +32,10 @@ async function getKey(keyName) {
     const docRef = doc(db, 'Keys', keyName);
     const docSnap = await getDoc(docRef);
     const key = await docSnap.data().key;
+    console.log(key);
     return key;
 }
 
 
 export {uploadMessage, getKey};
-
-
-/*
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
-
-const secret_name = "openAIAPI";
-
-const client = new SecretsManagerClient({
-  region: "us-east-2",
-});
-
-let response;
-
-try {
-  response = await client.send(
-    new GetSecretValueCommand({
-      SecretId: secret_name,
-      VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
-    })
-  );
-} catch (error) {
-  // For a list of exceptions thrown, see
-  // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-  throw error;
-}
-
-const secret = response.SecretString;
-*/
 
