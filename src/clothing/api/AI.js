@@ -4,14 +4,9 @@ import axios from 'axios';
 import URLToPNG from "./URLToPNG";
 import { getKey } from "../Database";
 
-
-
 async function main(inputText) {
-    // MAKE SURE THIS IS HIDDEN ON PRODUCTION
     const openai = new OpenAI({ apiKey: await getKey('openAI'), dangerouslyAllowBrowser: true});
 
-    // MAKE SURE THIS IS HIDDEN ON PRODUCTION
-    const API_KEY = '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';
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: inputText }],
       model: "gpt-3.5-turbo",
@@ -40,7 +35,6 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
     lowerWear: [],
     footWear: [],
   };
-
  
   const items = returnText.split(',').map((item) => item.trim()); // the variable would be in this format ['upper: shirt', 'lower: shorts', 'feet: shoes']
   items.forEach(async (item) => {
@@ -51,7 +45,6 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
         return;
       }
       
-      // MAKE SURE YOU HIDE API KEY ON PRODUCTION
       const options = {
         method: 'GET',
         url: 'https://real-time-amazon-data.p.rapidapi.com/search',
@@ -81,7 +74,7 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
       let image = '';
 
       try {
-        url = await response.data.data.products[0].product_url; // ?&_encoding=UTF8&tag=dressful09-20&linkCode=ur2&linkId=bed16f27f02656ceeed8c569279af95d&camp=1789&creative=9325
+        url = await response.data.data.products[0].product_url;
         console.log(response.data.data.products[0]);
         image = await response.data.data.products[0].product_photo;
       } catch (error) {
@@ -104,34 +97,7 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
     
   });
   
-  //?th=1&linkCode=ll1&tag=dressful09-20& (affiliate tag)
-
-  console.log(categorizedItems);
   return categorizedItems;
 }
 
 export default OutfitReader;
-
-/*
-OLD API:
-
-const options = {
-        method: 'GET',
-        url: `https://amazon-data-scraper128.p.rapidapi.com/search/${gender}_${clothing}`,
-        params: {
-          api_key: await getKey('amazonScraper')
-        },
-        headers: {
-          'X-RapidAPI-Key': '27e0c073b5msh2dde25fa9fb08dfp1380dcjsn56bdbd7473f6',
-          'X-RapidAPI-Host': 'amazon-data-scraper128.p.rapidapi.com'
-        }
-      };
-      let response;
-      try {
-        response = await axios.request(options);
-        console.log(response.data); 
-      } catch (error) {
-        console.error(error);
-      }
-      affiliateURL += '?th=1&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag
-*/

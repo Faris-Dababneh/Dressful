@@ -43,7 +43,6 @@ function Preview({ outfit })
         console.log(updatedOutfitImages)
 
         Object.keys(outfitImages).forEach((key, index) => {
-            console.log(key)
             if (outfit[key].length > 0) {
                 const data = [];
                 outfit[key].forEach((item) => {
@@ -81,8 +80,6 @@ function Preview({ outfit })
                 }
             }
         })
-        console.log(updatedOutfitImages)
-        console.log(updatedOutfitLinks)
         setOutfitImages(updatedOutfitImages);
         setOutfitLinks(updatedOutfitLinks);
     }
@@ -120,18 +117,3 @@ function Preview({ outfit })
 
 export default Preview;
 
-/*
-return (
-        <LoadingOverlay active={isWaiting} spinner className='h-full w-full' text='Assembling your outfit. This will take a few seconds.'>
-            <div className='flex flex-row w-full h-full content-center items-center justify-center'>
-                    <div className=''>
-                        <Carousel images={outfitImages.headWear} links={outfitLinks.headWear}/>
-                        <Carousel images={outfitImages.upperWear} links={outfitLinks.upperWear}/>
-                        <Carousel images={outfitImages.lowerWear} links={outfitLinks.lowerWear}/>
-                        <Carousel images={outfitImages.footWear} links={outfitLinks.footWear}/>
-                    </div>
-            </div>
-        </LoadingOverlay>
-    );
-
-*/

@@ -7,7 +7,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from 'firebase/
 import imglyRemoveBackground from "@imgly/background-removal"
 import { useState } from 'react';
 
-// FIGURE OUT FIREBASE SECURITY RULES TO PREVENT PEOPLE FROM REQUESTING DATABASE UNAUTHORIZED
 const firebaseConfig = {
     apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
     authDomain: "dressful-99f4d.firebaseapp.com",
@@ -32,7 +31,6 @@ async function getKey(keyName) {
     const docRef = doc(db, 'Keys', keyName);
     const docSnap = await getDoc(docRef);
     const key = await docSnap.data().key;
-    console.log(key);
     return key;
 }
 

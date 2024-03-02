@@ -7,15 +7,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Slider, Input } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import Fab from '@mui/material/Fab';
-
-import main from '../../clothing/api/AI';
-import OutfitReader from '../../clothing/api/AI';
-
 
 function SelectionMode({ onInputChange })
 {
-    // Add these all to an array state and pass to parent function
     const [occasionValue, setOccasionValue] = useState(null);
     const [styleValue, setStyleValue] = useState(null);
     const [temperatureValue, setTemperatureValue] = useState(70);

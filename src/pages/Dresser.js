@@ -41,7 +41,6 @@ function Dresser()
     const [physicalValue, setPhysicalValue] = useState([26, 180, 68]);
     const handlePhysicalChange = (value) => {
         setPhysicalValue(value); // In array form
-        console.log(value)
     }
 
     const [mode, setMode] = useState('selection');
@@ -57,7 +56,6 @@ function Dresser()
     const [customValue, setCustomValue] = useState('');
     const handleCustomChange = (value) => {
         setCustomValue(value);
-        console.log(value)
     }
 
     // Set a default outfit for male
@@ -72,7 +70,7 @@ function Dresser()
     const cookieName = 'buttonPressCount'; // If needed for testing, 'Cookies.remove(cookieName)'
 
     const initialCount = 0;
-    const guestOutfitLimit = 100;
+    const guestOutfitLimit = 6;
     
     const [isDisabled, setIsDisabled] = useState(Cookies.get(cookieName) ? Cookies.get(cookieName) < guestOutfitLimit ? false : true: false); // If the user has previously exceeded the limit, the submit button will be disabled
     const [submitButtonText, setSubmitButtonText] = useState('SUBMIT');
@@ -109,11 +107,6 @@ function Dresser()
             }
         }
     }
-   
-    const test = async () => {
-        const key = await getKey('rapidAPI');
-        console.log(key)
-    }
 
     const theme = createTheme({
         palette: {
@@ -122,7 +115,6 @@ function Dresser()
           }
         }
       });
-    
 
       return (
         <div className='flex flex-col md:flex-row w-full h-full bg-primary min-h-screen'>
@@ -171,51 +163,3 @@ function Dresser()
 }
 
 export default Dresser;
-
-/*
-return (
-        <div className='flex flex-row w-full h-full'>
-            <div className='flex flex-col w-1/4 align-center content-center bg-primary'>
-                <div className='w-full  p-3'>
-                    <Link to='/'><button><img src={logo} className='w-[12rem] '/></button></Link>
-                </div>
-                
-                <h2 className='text-2xl font-bold text-tertiary mx-auto mt-2 mb-4'>PHYSICAL DESCRIPTION</h2>
-                <Gender onInputChange={handleGenderChange} />
-                <Physical onInputChange={handlePhysicalChange}/>
-                <h2 className='text-2xl font-bold text-tertiary mx-auto mt-2 mb-4'>SIUTATIONAL DESCRIPTION</h2>
-                <ThemeProvider theme={theme}>
-                    <ToggleButtonGroup
-                        color='secondary'
-                        value={mode}
-                        exclusive
-                        onChange={handleModeChange}
-                        aria-label="Platform"
-                        className='mx-auto mb-6'
-                        >
-                        <ToggleButton value="selection" className='text-secondary border border-secondary'>Selection</ToggleButton>
-                        <ToggleButton value="custom" className='text-secondary border border-secondary'>Custom</ToggleButton>
-                    </ToggleButtonGroup>
-                </ThemeProvider>
-                {mode === 'selection' ? (
-                    <SelectionMode onInputChange={handleSituationalChange}/>
-                ) : (
-                    <CustomMode onInputChange={handleCustomChange}/>
-                )}
-                <ThemeProvider theme={theme}>
-                    <div>
-                        <Fab variant="extended" sx={{width: '50%'}} color='secondary' onClick={updateClothing} disabled={isDisabled} >
-                            {submitButtonText}
-                        </Fab>
-                    </div>
-                </ThemeProvider>
-            </div>
-            <div className='w-3/4 h-full bg-accent'>
-                <LoadingOverlay active={false} spinner className='h-full'>
-                    <Preview outfit={categorizedItems}/>
-                </LoadingOverlay>
-            </div>
-            
-        </div>
-    );
-*/
