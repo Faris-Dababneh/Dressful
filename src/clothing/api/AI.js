@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import OpenAI from "openai";
 import axios from 'axios';
-import URLToPNG from "./URLToPNG";
 import { getKey } from "../Database";
 
 async function main(inputText) {
@@ -9,7 +8,7 @@ async function main(inputText) {
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: inputText }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo", //gpt-3.5-turbo
     });
 
     return completion.choices[0].message.content;
@@ -73,13 +72,12 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
       let url = 'https://www.amazon.com/ref=nav_logo';
       let image = '';
 
+      const index = Math.floor(Math.random() * (6)) + 0;
+
       try {
-        url = await response.data.data.products[0].product_url;
-        console.log(response.data.data.products[0]);
-        image = await response.data.data.products[0].product_photo;
-      } catch (error) {
-        console.log('Waiting for API...');
-      }
+        url = await response.data.data.products[index].product_url;
+        image = await response.data.data.products[index].product_photo;
+      } catch (error) {}
       
       //let affiliateURL = url.slice(0, url.indexOf('/ref')); // removes the end part of the amazon link
       let affiliateURL = url + '?&linkCode=ll1&tag=dressful09-20&'; // adds Dressful affiliate tag

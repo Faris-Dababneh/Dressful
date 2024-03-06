@@ -91,7 +91,7 @@ function SelectionMode({ onInputChange })
                     name='style'
                     includeInputInList
                     options={moods}
-                    value={styleValue}
+                    color='primary'
                     onChange={(event, newValue) => {
                         // Update the state when a new value is selected
                         handleStyle(newValue);
@@ -116,7 +116,7 @@ function SelectionMode({ onInputChange })
                             step={10}
                             marks={temperatureMarks}
                             valueLabelDisplay='auto'
-                            sx={{width: '70%', maxWidth: 300}}
+                            sx={{width: '60%', maxWidth: 300}}
                             className='mr-4 text-secondary'
                         />
                         <Input

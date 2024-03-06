@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { uploadMessage } from "../clothing/Database";
 import Cookies from 'js-cookie';
@@ -6,6 +6,10 @@ import { Alert } from "@mui/material";
 
 function Contact()
 {
+    useEffect(() => {
+        document.title = 'Dressful - Contact';
+    })
+
     const [name, setName] = useState('name');
     const [email, setEmail] = useState('email');
     const [input, setInput] = useState('');

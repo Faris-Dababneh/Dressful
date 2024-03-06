@@ -2,10 +2,6 @@ import { Firestore } from 'firebase/firestore/lite';
 import { initializeApp } from 'firebase/app';
 import { collection, getFirestore } from 'firebase/firestore'
 import { doc, setDoc, getDoc, getDocs } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
-
-import imglyRemoveBackground from "@imgly/background-removal"
-import { useState } from 'react';
 
 const firebaseConfig = {
     apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,

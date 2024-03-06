@@ -18,42 +18,41 @@ import Fab from '@mui/material/Fab';
 
 import Preview from './Preview';
 import OutfitReader from '../clothing/api/AI';
-import AmazonScraper from '../clothing/api/AmazonScraper';
 import LoadingOverlay from 'react-loading-overlay-ts';
 
-import { RateLimiterMemory } from "rate-limiter-flexible";
 import Cookies from 'js-cookie';
-import { getKey } from '../clothing/Database';
+import { GrPowerReset } from "react-icons/gr";
 
-import {
-    SecretsManagerClient,
-    GetSecretValueCommand,
-  } from "@aws-sdk/client-secrets-manager";
-  
 
 function Dresser()
 {
-    const [genderValue, setGenderValue] = useState('male');
+    useEffect(() => {
+        document.title = 'Dressful - Dress';
+    })
+
+    const defaultValues = ['male', [26, 180, 68], 'selection', ['occasion', 'style', 70], '']
+
+    const [genderValue, setGenderValue] = useState(defaultValues[0]);
     const handleGenderChange = (value) => {
         setGenderValue(value);
     }
 
-    const [physicalValue, setPhysicalValue] = useState([26, 180, 68]);
+    const [physicalValue, setPhysicalValue] = useState(defaultValues[1]);
     const handlePhysicalChange = (value) => {
         setPhysicalValue(value); // In array form
     }
 
-    const [mode, setMode] = useState('selection');
+    const [mode, setMode] = useState(defaultValues[2]);
     const handleModeChange = (event, newMode) => {
         setMode(newMode);
     };
 
-    const [situationValue, setSituationValue] = useState(['occasion', 'style', 70]);
+    const [situationValue, setSituationValue] = useState(defaultValues[3]);
     const handleSituationalChange = (value) => {
         setSituationValue(value); // In array form
     }
     
-    const [customValue, setCustomValue] = useState('');
+    const [customValue, setCustomValue] = useState(defaultValues[4]);
     const handleCustomChange = (value) => {
         setCustomValue(value);
     }
@@ -146,10 +145,13 @@ function Dresser()
                     <CustomMode onInputChange={handleCustomChange}/>
                 )}
                 <ThemeProvider theme={theme}>
-                    <div>
+                    <div className='flex flex-row justify-center items-center'>
                         <Fab variant="extended" className='mt-2' sx={{width: '50%'}} color='secondary' onClick={updateClothing} disabled={isDisabled} active={isLoading}>
-                            {submitButtonText}
+                            <h1 className='text-xl text-primary'>{submitButtonText}</h1>
                         </Fab>
+                        {/*<div className='group-hover:block relative text-2xl rounded-full ml-3 mt-2 p-2 bg-black/20 hover:bg-darkened text-tertiary cursor-pointer'>
+                            <GrPowerReset size={35} onClick={}/>
+                        </div>*/}
                     </div>
                 </ThemeProvider>
             </div>

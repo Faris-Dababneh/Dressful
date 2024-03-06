@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ReactTyped } from "react-typed";
 
 import '../App.css';
@@ -11,6 +11,10 @@ import { RiTShirt2Line } from "react-icons/ri";
 
 function Home()
 {
+    useEffect(() => {
+        document.title = 'Dressful - Home';
+    })
+
     return (
         <div className='flex flex-col items-center justify-center text-center bg-primary min-h-screen' style={{ overscrollBehaviorY: 'none' }}>
             <Navbar />
