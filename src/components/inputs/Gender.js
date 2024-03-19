@@ -19,7 +19,7 @@ function Gender({ onInputChange })
 
 
     return (
-        <FormControl className='mx-auto mb-2'>
+        <FormControl className='mb-2'>
             <FormLabel id="demo-row-radio-buttons-group-label" className='text-xl text-tertiary mx-auto mt-2'>GENDER</FormLabel>
             <RadioGroup
                 row
@@ -27,10 +27,11 @@ function Gender({ onInputChange })
                 name="row-radio-buttons-group"
                 value={value}
                 onChange={handleChange}
-                className='text-tertiary'
+                className='text-tertiary flex items-center justify-center'
             >
                 <FormControlLabel value="male" control={<Radio className='text-secondary'/>} label="Male"/>
                 <FormControlLabel value="female" control={<Radio className='text-secondary'/>} label="Female" />
+                <FormControlLabel value="neutral" control={<Radio className='text-secondary'/>} label="Neutral" />
             </RadioGroup>
         </FormControl>
     );

@@ -7,7 +7,7 @@ import { Alert } from "@mui/material";
 function Contact()
 {
     useEffect(() => {
-        document.title = 'Dressful - Contact';
+        document.title = 'Contact | Dressful';
     })
 
     const [name, setName] = useState('name');
@@ -44,7 +44,7 @@ function Contact()
     return (
         <div className='flex flex-col items-center text-center bg-primary min-h-screen w-screen'>
             <Navbar />
-            <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div className='flex flex-col items-center justify-center w-full h-full animate-fade-down mt-10 z-10'>
                 <h1 className='text-4xl sm:text-5xl lg:text-7xl font-bold text-secondary mb-5'>Contact Us</h1>
                 <p className='text-lg sm:text-xl lg:text-2xl text-tertiary mb-8 max-w-md'>Fill out the form for any questions, concerns, suggestions, or business inquiries!</p>
                 {didSubmit && (
@@ -52,7 +52,7 @@ function Contact()
                     Thanks for your feedback! We will get back to you ASAP.
                     </Alert>
                 )}
-                <div className='bg-darkened w-full sm:w-2/3 lg:w-1/2 xl:w-1/3 h-auto p-10 border-accent border-4 rounded-md'>
+                <div className='bg-darkened w-full sm:w-2/3 lg:w-1/2 xl:w-1/3 h-auto p-10 border-accent border-4 rounded-md animate-fade-right'>
                     <input type='text' className='w-full h-12 bg-darkened mb-5 pl-4 rounded-md text-xl text-left border border-tertiary text-tertiary' placeholder="Name" autoFocus onChange={event => setName(event.target.value)}/>
                     <input type='text' className='w-full h-12 bg-darkened mb-5 pl-4 rounded-md text-xl text-left border border-tertiary text-tertiary' placeholder="Email" onChange={event => setEmail(event.target.value)}/>
                     <textarea type='textarea' className='w-full h-40 bg-darkened mb-5 rounded-md text-xl text-tertiary border border-tertiary overflow-auto text-left p-4' placeholder="Message" onChange={event => setInput(event.target.value)}/>

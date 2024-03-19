@@ -27,7 +27,7 @@ import { GrPowerReset } from "react-icons/gr";
 function Dresser()
 {
     useEffect(() => {
-        document.title = 'Dressful - Dress';
+        document.title = 'Dress | Dressful';
     })
 
     const defaultValues = ['male', [26, 180, 68], 'selection', ['occasion', 'style', 70], '']
@@ -116,8 +116,8 @@ function Dresser()
       });
 
       return (
-        <div className='flex flex-col md:flex-row w-full h-full bg-primary min-h-screen'>
-            <div className='md:w-1/3 lg:w-1/4 bg-primary h-full overflow-y-auto'>
+        <div className='flex flex-col md:flex-row w-full h-full bg-primary min-h-screen animate-fade-down'>
+            <div className='md:w-1/3 lg:w-1/3 bg-primary h-full overflow-y-auto'>
                 <div className='w-full p-3'>
                     <Link to='/'><button><img src={logo} className='w-[12rem] '/></button></Link>
                 </div>
@@ -146,16 +146,13 @@ function Dresser()
                 )}
                 <ThemeProvider theme={theme}>
                     <div className='flex flex-row justify-center items-center'>
-                        <Fab variant="extended" className='mt-2' sx={{width: '50%'}} color='secondary' onClick={updateClothing} disabled={isDisabled} active={isLoading}>
+                        <Fab variant="extended" className='mt-2 mb-4' sx={{width: '50%'}} color='secondary' onClick={updateClothing} disabled={isDisabled} active={isLoading}>
                             <h1 className='text-xl text-primary'>{submitButtonText}</h1>
                         </Fab>
-                        {/*<div className='group-hover:block relative text-2xl rounded-full ml-3 mt-2 p-2 bg-black/20 hover:bg-darkened text-tertiary cursor-pointer'>
-                            <GrPowerReset size={35} onClick={}/>
-                        </div>*/}
                     </div>
                 </ThemeProvider>
             </div>
-            <div className='md:w-3/4 h-full bg-accent overflow-y-auto'>
+            <div className='md:w-2/3 lg:w-2/3 h-full bg-accent overflow-y-auto'>
                 <LoadingOverlay active={isLoading} spinner className='h-full' text='Processing your outfit...'>
                     <Preview outfit={categorizedItems}/>
                 </LoadingOverlay>
