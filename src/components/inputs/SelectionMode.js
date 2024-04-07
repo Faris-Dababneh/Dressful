@@ -5,10 +5,12 @@ import '../../App.css';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Slider, Input } from '@mui/material';
+import { Slider, Input, MenuItem } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
-function SelectionMode({ onInputChange })
+function SelectionMode({ onInputChange, isMetric })
 {
     const [occasionValue, setOccasionValue] = useState(null);
     const [styleValue, setStyleValue] = useState(null);
@@ -44,31 +46,13 @@ function SelectionMode({ onInputChange })
         }
       });
 
-    const temperatureMarks = [
-    {
-        value: 0,
-        label: '0°F',
-    },
-    {
-        value: 30,
-        label: '30°F',
-    },
-    {
-        value: 60,
-        label: '60°F',
-    },
-    {
-        value: 90,
-        label: '90°F',
-    },
-    ];
-
     const switchLabel = { inputProps: { 'aria-label': 'Temperature Toggle' } };
 
     return (
         <div className='flex flex-col items-center content-center'>
             <ThemeProvider theme={theme}>
                 <Autocomplete
+                    freeSolo
                     disablePortal
                     value={occasionValue}
                     id="combo-box-demo"
@@ -84,8 +68,8 @@ function SelectionMode({ onInputChange })
                     renderInput={(params) => <TextField {...params} label="Occasion" color='secondary' />}
                     className='mb-4'
                 />
-    
                 <Autocomplete
+                    freeSolo
                     disablePortal
                     id="combo-box-demo"
                     name='style'
@@ -95,13 +79,14 @@ function SelectionMode({ onInputChange })
                     onChange={(event, newValue) => {
                         // Update the state when a new value is selected
                         handleStyle(newValue);
-                      }}
+                        }}
                     sx={{ width: '80%', maxWidth: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'}, '& .MuiInput-underline:after': {color: '#00ADB5'} }}
                     renderInput={(params) => <TextField {...params} label="Style" color='secondary' />}
                     className='mb-4'
-                />
+                />           
+                
                 <div className='flex flex-row content-center align-center justify-center w-full'>
-                    <h2 className='text-xl text-tertiary mt-2 mr-2'>TEMPERATURE (°F)</h2>
+                    <h2 className='text-xl text-tertiary mt-2 mr-2 flex flex-row'>TEMPERATURE ({isMetric ? <p>°C</p> : <p>°F</p>})</h2>
                     <Switch {...switchLabel} checked={temperatureToggle} onChange={handleToggle}
                                 name='temperatureToggle' color='secondary' className='mt-1'/>
                 </div>
@@ -112,9 +97,10 @@ function SelectionMode({ onInputChange })
                             aria-label="Always visible"
                             name='temperature'
                             value={temperatureValue} onChange={handleTemperature}
-                            defaultValue={70}
-                            step={10}
-                            marks={temperatureMarks}
+                            //defaultValue={isMetric ? 20 : 70}
+                            step={5}
+                            min={isMetric ? -20 : 0}
+                            max={isMetric ? 40 : 100}
                             valueLabelDisplay='auto'
                             sx={{width: '60%', maxWidth: 300}}
                             className='mr-4 text-secondary'
@@ -144,6 +130,41 @@ function SelectionMode({ onInputChange })
 
 const styles = ['Casual', 'Professional', 'Business Casual', 'Streetwear', 'Vintage', 'Bohemian', 'Preppy', 'Sporty/athleisure', 'Goth', 'Minimalist', 'Romantic', 'Punk', 'Glamorous', 'Hipster', 'Ethical/Sustainable', 'Androgynous', 'High Fashion', 'Country/Western', 'Nautical', 'Cosplay'];
 
+/*
+{Old select components}
+<Autocomplete
+                    disablePortal
+                    value={occasionValue}
+                    id="combo-box-demo"
+                    name='occasion'
+                    includeInputInList
+                    options={occasions}
+                    onChange={(event, newValue) => {
+                        // Update the state when a new value is selected
+                        handleOccasion(newValue);
+                      }}
+                    focused
+                    sx={{ width: '80%', maxWidth: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'} }}
+                    renderInput={(params) => <TextField {...params} label="Occasion" color='secondary' />}
+                    className='mb-4'
+                />
+
+     <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    name='style'
+                    includeInputInList
+                    options={styles}
+                    color='primary'
+                    onChange={(event, newValue) => {
+                        // Update the state when a new value is selected
+                        handleStyle(newValue);
+                      }}
+                    sx={{ width: '80%', maxWidth: 300, '& .MuiInputLabel-root': { color: '#00ADB5' }, '& .MuiInputBase-root': { '&.Mui-focused': { color: '#EEEEEE' } }, '& .MuiInputBase-input': {color: '#EEEEEE'}, '& .MuiInput-underline:after': {color: '#00ADB5'} }}
+                    renderInput={(params) => <TextField {...params} label="Style" color='secondary' />}
+                    className='mb-4'
+                />           
+*/
 
 const occasions = [
     'Wedding',
@@ -158,7 +179,7 @@ const occasions = [
     'Picnic',
     'Barbecue',
     'Nightclub',
-    'Opera or theater performance',
+    'Theater performance',
     'Art gallery opening',
     'Hiking trip',
     'Camping',
@@ -262,7 +283,7 @@ const occasions = [
     'Boxing match',
     'Wrestling match',
     'MMA fight',
-    'Horseback riding competition',
+    'Horseback riding comp.',
     'Gymnastics competition',
     'Figure skating competition',
     'Ski race'

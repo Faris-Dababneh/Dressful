@@ -1,4 +1,3 @@
-/*Need to make a function in this component that calls OutfitReader, gets its return value of clothing, and passes this to the Preview component as a state which then updates the items in Preview */
 import React, { useState, useEffect } from 'react';
 
 import '../App.css';
@@ -19,10 +18,8 @@ import Fab from '@mui/material/Fab';
 import Preview from './Preview';
 import OutfitReader from '../clothing/api/AI';
 import LoadingOverlay from 'react-loading-overlay-ts';
-
+import Switch from '@mui/material/Switch';
 import Cookies from 'js-cookie';
-import { GrPowerReset } from "react-icons/gr";
-
 
 function Dresser()
 {
@@ -57,8 +54,18 @@ function Dresser()
         setCustomValue(value);
     }
 
-    // Set a default outfit for male
-    // Go to Preview Component for next step
+    const [metricToggle, setMetricToggle] = useState(false);
+    const [setting, setSetting] = useState('Imperial');
+
+    const handleToggle = (event) => {
+        setMetricToggle(event.target.checked);
+        if (setting === 'Imperial') {
+            setSetting('Metric');
+        } else {
+            setSetting('Imperial');
+        }
+    }
+
     const [categorizedItems, setCategorizedItems] = useState({
         headWear: [[[''],['']]],
         upperWear: [[[''],['']]],
@@ -90,17 +97,15 @@ function Dresser()
             setIsLoading(true);
             return;
         } else {
-            // OutfitReader(gender, age, weight, height, occasion, style, isCustom)
-            console.log(`${genderValue}, ${physicalValue[0]}, ${physicalValue[1]}, ${physicalValue[2]}, ${customValue}, true`);
             setIsLoading(true);
             getAndIncrementCount(); // Increments outfit requests by 1
             let items;
             if (mode === 'custom') {
-                items = await OutfitReader(genderValue, physicalValue[0], physicalValue[1], physicalValue[2], customValue, null, true);
+                items = await OutfitReader(genderValue, physicalValue[0], physicalValue[1], physicalValue[2], customValue, null, true, metricToggle);
                 setCategorizedItems(items);
                 setIsLoading(false);
             } else {
-                items = await OutfitReader(genderValue, physicalValue[0], physicalValue[1], physicalValue[2], situationValue[0], situationValue[1], situationValue[2], false);
+                items = await OutfitReader(genderValue, physicalValue[0], physicalValue[1], physicalValue[2], situationValue[0], situationValue[1], situationValue[2], false, metricToggle);
                 setCategorizedItems(items);
                 setIsLoading(false);
             }
@@ -115,18 +120,30 @@ function Dresser()
         }
       });
 
+      const switchLabel = { inputProps: { 'aria-label': 'Metric Toggle' } };
+
       return (
         <div className='flex flex-col md:flex-row w-full h-full bg-primary min-h-screen animate-fade-down'>
-            <div className='md:w-1/3 lg:w-1/3 bg-primary h-full overflow-y-auto'>
+            <ThemeProvider theme={theme}>
+            <div className='md:w-2/5 lg:w-1/3 bg-primary sm:h-auto md:h-full sm:overflow-y-scroll md:overflow-y-auto border-r border-darkened border-2'>
                 <div className='w-full p-3'>
                     <Link to='/'><button><img src={logo} className='w-[12rem] '/></button></Link>
                 </div>
                 
-                <h2 className='text-2xl font-bold text-tertiary mx-auto mt-2 mb-4'>PHYSICAL DESCRIPTION</h2>
+                
+                <div className='flex flex-col content-center align-center justify-center w-full mb-4'>
+                    <h2 className='text-2xl font-bold text-tertiary mt-2'>PHYSICAL DESCRIPTION</h2>
+                    <div className='flex flex-row justify-center w-full'>
+                        <h2 className='text-xl text-secondary font-bold mt-2 mr-2'>{setting}</h2>
+                        <Switch {...switchLabel} checked={metricToggle} onChange={handleToggle}
+                                name='metricToggle' color='secondary' className='mt-1'/>
+                    </div>
+                    
+                </div>                
                 <Gender onInputChange={handleGenderChange} />
-                <Physical onInputChange={handlePhysicalChange}/>
+                <Physical onInputChange={handlePhysicalChange} isMetric={metricToggle}/>
                 <h2 className='text-2xl font-bold text-tertiary mx-auto mt-2 mb-4'>SITUATIONAL DESCRIPTION</h2>
-                <ThemeProvider theme={theme}>
+                
                     <ToggleButtonGroup
                         color='secondary'
                         value={mode}
@@ -138,25 +155,25 @@ function Dresser()
                         <ToggleButton value="selection" className='text-secondary border border-secondary'>Selection</ToggleButton>
                         <ToggleButton value="custom" className='text-secondary border border-secondary'>Custom</ToggleButton>
                     </ToggleButtonGroup>
-                </ThemeProvider>
+                
                 {mode === 'selection' ? (
-                    <SelectionMode onInputChange={handleSituationalChange}/>
+                    <SelectionMode onInputChange={handleSituationalChange} isMetric={metricToggle}/>
                 ) : (
                     <CustomMode onInputChange={handleCustomChange}/>
                 )}
-                <ThemeProvider theme={theme}>
                     <div className='flex flex-row justify-center items-center'>
                         <Fab variant="extended" className='mt-2 mb-4' sx={{width: '50%'}} color='secondary' onClick={updateClothing} disabled={isDisabled} active={isLoading}>
                             <h1 className='text-xl text-primary'>{submitButtonText}</h1>
                         </Fab>
                     </div>
-                </ThemeProvider>
+                
             </div>
-            <div className='md:w-2/3 lg:w-2/3 h-full bg-accent overflow-y-auto'>
+            <div className='md:w-3/5 lg:w-2/3 bg-accent sm:h-auto md:h-full sm:overflow-y-scroll md:overflow-y-auto'>
                 <LoadingOverlay active={isLoading} spinner className='h-full' text='Processing your outfit...'>
                     <Preview outfit={categorizedItems}/>
                 </LoadingOverlay>
             </div>
+            </ThemeProvider>
         </div>
     );
 }

@@ -35,7 +35,7 @@ function CustomMode({ onInputChange })
                 <TextField
                     id="filled-multiline-static"
                     label="Describe the situation and/or the style"
-                    placeholder='I am going to...'
+                    placeholder='I need an outfit for...'
                     multiline
                     rows={5}
                     onChange={handleChange}

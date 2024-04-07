@@ -14,17 +14,16 @@ async function main(inputText) {
     return completion.choices[0].message.content;
 }
 
-async function OutfitReader(gender, age, weight, height, occasion, style, temperature, isCustom)
+async function OutfitReader(gender, age, weight, height, occasion, style, temperature, isCustom, isMetric)
 {
   let inputText;
   if (isCustom) {
-    inputText = `Generate an outfit for gender: ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for the following situation: '${occasion}'. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
+    inputText = `Generate an outfit for gender: ${gender} aged ${age}, weighs ${weight} ${isMetric ? 'kilograms' : 'pounds'}, is ${height} ${isMetric ? 'centimeters' : 'inches'} tall, who needs an outfit for the following situation: '${occasion}'. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
   } else {
-    inputText = `Generate an outfit for gender: ${gender} aged ${age}, weighs ${weight} pounds, is ${height} inches tall, who needs an outfit for the following situation: '${occasion}', wants a ${style} style, and it is ${temperature} degrees outside. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
+    inputText = `Generate an outfit for gender: ${gender} aged ${age}, weighs ${weight} ${isMetric ? 'kilograms' : 'pounds'}, is ${height} ${isMetric ? 'centimeters' : 'inches'} tall, who needs an outfit for the following situation: '${occasion}', wants a ${style} style, and it is ${temperature} degrees ${isMetric ? 'celcius' : 'fahrenheit'} outside. When listing the items in the outfit, list the item in the following exact format: 'part: item, part: item' where part represents where each clothing item is worn which is either 'head', 'upper', 'lower', 'feet') and item is the clothing item. Note that not every outfit will have an item worn on one of these body parts. In that case, you can list the item as 'none.' Additionally, some outfits may have multiple items worn on the same body part, so ensure you include that if needed.`;
   }
 
   const returnText = await main(inputText);
-  console.log(returnText);
 
   const categorizedItems = {
     headWear: [],
@@ -59,7 +58,6 @@ async function OutfitReader(gender, age, weight, height, occasion, style, temper
       let response;
       try {
         response = await axios.request(options);
-        console.log(response)
       } catch (error) {}
 
       let url = 'https://www.amazon.com/ref=nav_logo';

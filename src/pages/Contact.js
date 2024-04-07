@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Footer from "./Footer";
 import { uploadMessage } from "../clothing/Database";
 import Cookies from 'js-cookie';
 import { Alert } from "@mui/material";
+import { Helmet } from "react-helmet";
 
 function Contact()
 {
@@ -42,9 +44,13 @@ function Contact()
     }
 
     return (
-        <div className='flex flex-col items-center text-center bg-primary min-h-screen w-screen'>
+        <div className='flex flex-col items-center text-center bg-primary min-h-screen w-full'>
+            <Helmet>
+                <meta name="description" content="The contact page of Dressful. Fill out a quick form to reach us, and we will get back to you as soon as possible!" />
+                <link rel="canonical" href="https://dressful.me/contact" />
+            </Helmet>
             <Navbar />
-            <div className='flex flex-col items-center justify-center w-full h-full animate-fade-down mt-10 z-10'>
+            <div className='flex flex-col items-center w-full h-full animate-fade-down py-14'>
                 <h1 className='text-4xl sm:text-5xl lg:text-7xl font-bold text-secondary mb-5'>Contact Us</h1>
                 <p className='text-lg sm:text-xl lg:text-2xl text-tertiary mb-8 max-w-md'>Fill out the form for any questions, concerns, suggestions, or business inquiries!</p>
                 {didSubmit && (
@@ -59,6 +65,7 @@ function Contact()
                     <button className='w-full h-12 border border-tertiary rounded-md text-xl bg-gradient-to-r from-secondary to-darkened text-tertiary transition ease-in-out hover:transform hover:scale-105' onClick={submit} disabled={isDisabled}>{submitText}</button>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

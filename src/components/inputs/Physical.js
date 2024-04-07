@@ -1,5 +1,5 @@
 // INPUTS FOR AGE, WEIGHT, AND HEIGHT
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '../../App.css';
 
@@ -7,12 +7,15 @@ import Slider from '@mui/material/Slider';
 import Input from '@mui/material/Input';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Physical({ onInputChange })
+function Physical({ onInputChange, isMetric })
 {
     
     const [age, setAge] = useState(26);
-    const [weight, setWeight] = useState(180);
-    const [height, setHeight] = useState(68)
+    const [weight, setWeight] = useState(isMetric ? 80 : 180);
+    const [height, setHeight] = useState(isMetric ? 170 : 68)
+
+    useEffect(() => {
+    }, [isMetric]);
 
     const handleAge = (event) => {
         setAge(event.target.value);
@@ -52,7 +55,7 @@ function Physical({ onInputChange })
                 name='age'
                 onChange={handleAge}
                 inputProps={{
-                step: 3,
+                step: 1,
                 min: 13,
                 max: 80,
                 type: 'number',
@@ -61,27 +64,27 @@ function Physical({ onInputChange })
                 className='text-tertiary w-12 border-b border-secondary'
                 />
             </div>
-            <h2 className='text-xl text-tertiary mx-auto mt-2 '>WEIGHT (lbs)</h2>
+            <h2 className='text-xl text-tertiary mx-auto mt-2 flex flex-row'>WEIGHT ({isMetric ? (<p>kg</p>) : <p>lbs</p>})</h2>
             <div className='flex w-full items-center align-center content-center justify-center mb-2'>
-                <Slider aria-label="Volume" value={weight} name='weight' onChange={handleWeight} valueLabelDisplay="auto" min={80} max={300} className='w-1/2 mr-4 text-secondary'/>
+                <Slider aria-label="Volume" value={weight} name='weight' onChange={handleWeight} valueLabelDisplay="auto" min={isMetric ? 30 : 80} max={isMetric ? 150 : 300} className='w-1/2 mr-4 text-secondary'/>
                 <Input
                 value={weight}
                 name='weight'
                 size="small"
                 onChange={handleWeight}
                 inputProps={{
-                step: 5,
-                min: 80,
-                max: 300,
+                step: 1,
+                min: isMetric ? 30 : 80,
+                max: isMetric ? 150 : 300,
                 type: 'number',
                 'aria-labelledby': 'input-slider',
                 }}
                 className='text-tertiary w-12 border-b border-secondary'
                 />
             </div>
-            <h2 className='text-xl text-tertiary mx-auto mt-2 '>HEIGHT (in)</h2>
+            <h2 className='text-xl text-tertiary mx-auto mt-2 flex flex-row'>HEIGHT ({isMetric ? (<p>cm</p>) : <p>in</p>})</h2>
             <div className='flex w-full items-center align-center content-center justify-center mb-2'>
-                <Slider aria-label="Custom marks" value={height} name='height' onChange={handleHeight} valueLabelDisplay="auto" min={48} max={84} className='w-1/2 mr-4 text-secondary'/>
+                <Slider aria-label="Custom marks" value={height} name='height' onChange={handleHeight} valueLabelDisplay="auto" min={isMetric ? 100 : 48} max={isMetric ? 220 : 84} className='w-1/2 mr-4 text-secondary' />
                 <Input
                 value={height}
                 name='height'
@@ -89,8 +92,8 @@ function Physical({ onInputChange })
                 onChange={handleHeight}
                 inputProps={{
                 step: 1,
-                min: 48,
-                max: 84,
+                min: isMetric ? 100 : 48,
+                max: isMetric ? 220 : 84,
                 type: 'number',
                 'aria-labelledby': 'input-slider',
                 }}

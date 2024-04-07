@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Card({ title, description, animate }) {
+function Card({ title, description }) {
     return (
         <div className='max-w-56 bg-darkened rounded-lg border border-secondary shadow-md animate-fade-up'>
             <div className="p-5">
